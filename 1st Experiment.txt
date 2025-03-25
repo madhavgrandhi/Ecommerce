@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Store</title>
+
+    <style>
+        body {
+            background: url('amazon pic.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .store-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .product-list, .cart-container {
+            background: rgba(134, 37, 37, 0.807);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            background: rgb(137, 38, 38);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mt-4 text-white">E-Commerce Store</h2>
+        <div class="store-container row">
+            <div class="col-md-7 product-list" id="product-list"></div>
+            <div class="col-md-4 cart-container">
+                <h3>Shopping Cart</h3>
+                <ul id="cart" class="list-group mb-3"></ul>
+                <h4>Total: ₹<span id="total-cost">0</span></h4>
+                <button class="btn btn-primary w-100" onclick="checkout()">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Laptop", brands: { "Dell": 50000, "HP": 55000, "Apple": 80000 } },
+            { id: 2, name: "Headphones", brands: { "Sony": 2000, "JBL": 2500, "Bose": 5000 } },
+            { id: 3, name: "Smartphone", brands: { "Samsung": 30000, "OnePlus": 35000, "Apple": 70000 } }
+        ];
+        
+        function displayProducts() {
+            let productList = document.getElementById("product-list");
+            productList.innerHTML = "";
+            products.forEach(product => {
+                let brandOptions = Object.keys(product.brands).map(brand => 
+                    <option value='${brand}'>${brand} - ₹${product.brands[brand]}</option>
+                ).join('');
+                
+                let productHTML = `<div class="product-card mb-3 p-3">
+                    <h5>${product.name}</h5>
+                    <select id="brand-${product.id}" class="form-select">
+                        ${brandOptions}
+                    </select>
+                    <button class="btn btn-success mt-2" onclick="addToCart(${product.id})">Add to Cart</button>
+                </div>`;
+                productList.innerHTML += productHTML;
+            });
+        }
+        
+        let cart = [];
+        function addToCart(productId) {
+            let product = products.find(p => p.id === productId);
+            let brandSelect = document.getElementById(brand-${productId});
+            let selectedBrand = brandSelect.value;
+            let price = product.brands[selectedBrand];
+            
+            cart.push({ name: product.name, brand: selectedBrand, price: price });
+            updateCart();
+        }
+        
+        function updateCart() {
+            let cartList = document.getElementById("cart");
+            let totalCost = 0;
+            cartList.innerHTML = "";
+            cart.forEach((item, index) => {
+                totalCost += item.price;
+                let cartItem = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${item.name} (${item.brand}) - ₹${item.price}
+                    <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Remove</button>
+                </li>`;
+                cartList.innerHTML += cartItem;
+            });
+            document.getElementById("total-cost").textContent = totalCost;
+        }
+        
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+        
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+            } else {
+                alert("Thank you for your purchase!");
+                cart = [];
+                updateCart();
+            }
+        }
+        
+        displayProducts();
+    </script>
+    <forms>
+        <label for="Nam">Name</label>
+        <input type="text" placeholder="Name of customer"><br><br>
+        <label for="mobile">Mobile no.</label>
+        <input type="tel" placeholder="Mobile number">
+        <label for="address">Adress</label>
+        <textarea rows="3"></textarea>
+    </forms>
+</body>
+</html>
